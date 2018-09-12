@@ -2,7 +2,7 @@ $(document).ready(function () {
     
     let submitButton = $('#btnSubmit');
     let inputZone = $('form input:text');
-    let p = 0
+    p = 0
 
     $(submitButton).attr('disabled', true);
 
@@ -20,23 +20,30 @@ $(document).ready(function () {
     $(submitButton).on('click', function () { 
         // alert('You clicked me!'); <-- No longer used by the end.
         // $('<h2>Now look what you did.</h2>').appendTo('div'); <-- Same
-        $('ul').append(`<li>This is a list item thing.</li>`);
+        event.preventDefault();
+        let line = (`<li class="list${p}">This is a list item thing.</li>`);
+        $('ul').append(line);
 
-        $(`ul li`).on('click', function () {
+        $(`.list${p}`).on('click', function () {
             let randomR = Math.floor((Math.random() * 255) + 0);
             let randomG = Math.floor((Math.random() * 255) + 0);
             let randomB = Math.floor((Math.random() * 255) + 0);
 
             $(this).css('background-color', `rgb(${randomR}, ${randomG}, ${randomB})`);
 
+            console.log('click');
+
         });
 
-        $(`ul li`).on('dblclick', function () {
+        $(`.list${p}`).on('dblclick', function () {
             this.remove();
+
+            console.log('dblclick');
+
         });
 
+        p++;
         console.log(`${p}`);
-        event.preventDefault();
 
 
         // $(`.list${p}`).each(function (p) {

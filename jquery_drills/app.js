@@ -45,25 +45,6 @@ $(document).ready(function () {
         p++;
         console.log(`${p}`);
 
-
-        // $(`.list${p}`).each(function (p) {
-        //     $(`.list${p}`).click(function () { 
-        //         let randomR = Math.floor((Math.random() * 255) + 0);
-        //         let randomG = Math.floor((Math.random() * 255) + 0);
-        //         let randomB = Math.floor((Math.random() * 255) + 0);
-
-        //         $(`.list${p}`).css('background-color', `rgb(${randomR}, ${randomG}, ${randomB})`);
-        //     });
-
-        //     $(`.list${p}`).dblclick(function () { 
-        //         $(this).remove();
-
-        //     });
-
-        //     console.log(`${p}`);
-
-        // }); 
-
         // Made for h2 element when hovering over.
         // $('h2').hover(
         //     function () {

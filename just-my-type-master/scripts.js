@@ -49,49 +49,134 @@ $(document).ready(function () {
 
   let i = 0;
   let l = 0;
-
+  let howManyWords = 0;
+  let wordsPerMin = 0
   let moveBlock = 10;
+  let startTime = new Date();
+  let startMin = startTime.getMinutes();
+  let numOfMistakes = 0;
 
   $('#sentence').text(sentences[i]);
   $('#target-letter').text(`${sentences[i][l]}`);
-  console.log(sentences[i].length);
 
+  function calculateAccuracy() {
+    let endTime = new Date();
+    let endMin = endTime.getMinutes();
+    let minutes = startMin - endMin;
+    howManyWords = 54 / minutes - 2 * numOfMistakes;
+    wordsPerMin = Math.abs(howManyWords);
+  };
 
-  $(document).on('keypress', function () {
+    $(document).on('keypress', function () {
+      calculateAccuracy();
 
-    if (event.which === sentences[i][l].charCodeAt()) {
+    if (i === 4 && l === 48) {
 
-       $('#yellow-block').css('margin-left', `${moveBlock}px`);
-       moveBlock += 17;
-       l++;
-       console.log(l);
-       
-      if (l === (sentences[i].length - 1)) {
+      $('#feedback').text('');
+      $('#target-letter').text('Game Over!');
+      let tellMeAboutWords = `You 're words per minute ${wordsPerMin}!`
 
-        moveBlock = 0;
+      if (wordsPerMin <= 10) {
 
-        };
+        $('#target-letter').append(`<div class="endResult">${tellMeAboutWords}<br>Dang. That's not so good...</div>`);
 
-      if (l === sentences[i].length) {
+      } else if (wordsPerMin > 10 && wordsPerMin <= 50) {
 
-        i++
-        $('#sentence').text(sentences[i]);
-        l = 0
+        $('#target-letter').append(`<div class="endResult">${tellMeAboutWords}<br>I know you can do better! ;)</div>`);
+
+      } else if (wordsPerMin > 50 && wordsPerMin <= 75) {
+
+        $('#target-letter').append(`<div class="endResult">${tellMeAboutWords}<br>Noice! Great job! Keep practicing!</div>`);
+
+      } else if (wordsPerMin > 75 && wordsPerMin <= 99) {
+
+        $('#target-letter').append(`<div class="endResult">${tellMeAboutWords}<br>That's great! All the hard work paying off!</div>`);
+
+      } else if (wordsPerMin < 99) {
+
+        $('#target-letter').append(`<div class="endResult">${tellMeAboutWords}<br>YOU'RE AMAZING! BLAZING FAST!</div>`);
 
       };
 
-      if (sentences[i][l].charCodeAt() === 32) {
+      $('.endResult').css({
+        'font-size': '20px',
+        'text-decoration': 'underline'
+      });
 
-        $('#target-letter').text('[space]');
+      $('#32').after('<div class="playAgain">Play Again?</div>');
+      $('.playAgain').css('font-size', "30px");
+      $('.playAgain').after('<button class="round2">HELL YES!</button>');
+      $('.round2').after('<button class="chicken">Nah, I\'m good.</button>');
+      $('button').css({
+        'margin': '10px',
+        'padding': '10px'
+      });
+
+      $('.round2').on('click', function () {
+
+        alert("Get your fingers ready!!");
+        location.reload();
+
+      });
+
+      $('.chicken').on('click', function () {
+
+        alert('Don\'t worry. Take some well deserved rest');
+
+      });
+
+      $(document).off();
+
+    } else {
+
+      $('#feedback').css({
+        'display': 'flex',
+        'flex-wrap': 'wrap'
+      });
+
+      if (event.which === sentences[i][l].charCodeAt()) {
+
+        $('#yellow-block').css('margin-left', `${moveBlock}px`);
+        moveBlock += 17;
+        l++;
+        $('#feedback').append('<div class="correct">✓</div>');
+        $('.correct').css('color', 'lightgreen');
+
+        if (l === (sentences[i].length - 1)) {
+
+          moveBlock = 0;
+
+          };
+
+        if (l === sentences[i].length) {
+
+          $('#feedback').text('');
+          i++
+          $('#sentence').text(sentences[i]);
+          l = 0
+
+        };
+
+        if (sentences[i][l].charCodeAt() === 32) {
+
+          $('#target-letter').text('[space]');
+
+        } else {
+
+          $('#target-letter').text(`${sentences[i][l]}`);
+
+        };
 
       } else {
 
-        $('#target-letter').text(`${sentences[i][l]}`);
+        $('#feedback').append('<div class="incorrect">✖</div>');
+        $('.incorrect').css('color', 'red');
+        numOfMistakes++;
 
       };
 
     };
-    
+
   });
 
 });
